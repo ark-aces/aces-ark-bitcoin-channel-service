@@ -1,0 +1,117 @@
+serverInfo:
+  name: "Aces ARK-BTC Channel Service"
+  description: "ACES ARK to BTC Channel service for value transfers"
+  instructions: >
+    After this contract is executed, any ARK sent to depositArkAddress will be exchanged for BTC and
+    sent directly to the given recipientBtcAddress less service fees.
+  version: "1.0.0"
+  websiteUrl: "https://arkaces.com"
+  flatFee: "0"
+  percentFee: "1.00%"
+  capacities:
+    -
+      value: "50.00"
+      unit: "BTC"
+      displayValue: "50 BTC"
+  inputSchema: >
+    {
+      "type": "object",
+      "properties": {
+        "recipientBtcAddress": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "recipientBtcAddress"
+      ]
+    }
+  outputSchema: >
+    {
+      "type": "object",
+      "properties": {
+        "depositArkAddress": {
+          "type": "string"
+        },
+        "recipientBtcAddress": {
+          "type": "string"
+        },
+        "transfers": {
+          "type": "array",
+          "properties": {
+            "arkAmount": {
+              "type": "string"
+            },
+            "arkToBtcRate": {
+              "type": "string"
+            },
+            "arkFlatFee": {
+              "type": "string"
+            },
+            "arkPercentFee": {
+              "type": "string"
+            },
+            "arkTotalFee": {
+              "type": "string"
+            },
+            "btcSendAmount": {
+              "type": "string"
+            },
+            "btcTransactionId": {
+              "type": "string"
+            },
+            "createdAt": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+
+#spring:
+#  datasource:
+#    url: "jdbc:h2:/tmp/btc_ark_channel_service.db;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE"
+#    driver-class-name: "org.h2.Driver"
+#  jpa:
+#    hibernate:
+#      ddl-auto: "update"
+
+
+#spring:
+#  datasource:
+#    platform: postgres
+#    url: jdbc:postgresql://localhost:5432/aces_btc_ark_channel_db
+#    username: service_user
+#    password: password
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#
+#flyway:
+#  enabled: true
+
+arkNetworkConfigPath: "ark_network_config/testnet.yml"
+
+fees:
+  arkFlatFee: 0
+  arkPercentFee: 1
+
+server:
+  port: 9191
+
+spring:
+  datasource:
+    url: "jdbc:h2:/tmp/ark_btc_channel_service.db;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE"
+    driver-class-name: "org.h2.Driver"
+  jpa:
+    hibernate:
+      ddl-auto: "update"
+
+bitcoinRpc:
+  url: http://localhost:18332/
+  username: bitcoinrpc
+  password: change_this_to_a_long_random_password
+
+arkListener:
+  url: http://localhost:9091
+
+arkEventCallbackUrl: http://localhost:9191/arkEvents
