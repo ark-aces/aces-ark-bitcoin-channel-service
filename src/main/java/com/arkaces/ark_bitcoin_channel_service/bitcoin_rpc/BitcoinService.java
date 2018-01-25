@@ -30,19 +30,6 @@ public class BitcoinService {
 
     private final NiceObjectMapper objectMapper = new NiceObjectMapper(new ObjectMapper());
 
-    public String sendTransaction(String recipientAddress, BigDecimal amount) {
-        HttpEntity<String> blockHashRequestEntity = getRequestEntity("sendtoaddress", new ArrayList<>());
-        return bitcoinRpcRestTemplate
-                .exchange(
-                        "/",
-                        HttpMethod.POST,
-                        blockHashRequestEntity,
-                        new ParameterizedTypeReference<BitcoinRpcResponse<String>>() {}
-                )
-                .getBody()
-                .getResult();
-    }
-
     public String getNewAddress() {
         HttpEntity<String> blockHashRequestEntity = getRequestEntity("getnewaddress", new ArrayList<>());
         return bitcoinRpcRestTemplate
@@ -98,7 +85,7 @@ public class BitcoinService {
      * @param amount amount in btc
      * @return transaction id
      */
-    private String sendValue(String recipientAddress, BigDecimal amount) {
+    public String sendValue(String recipientAddress, BigDecimal amount) {
         HttpEntity<String> blockHashRequestEntity = getRequestEntity("sendtoaddress", Arrays.asList(
             recipientAddress,
             amount.toPlainString()

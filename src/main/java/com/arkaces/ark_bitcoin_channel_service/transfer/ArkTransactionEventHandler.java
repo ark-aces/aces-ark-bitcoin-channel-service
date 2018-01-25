@@ -95,7 +95,7 @@ public class ArkTransactionEventHandler {
 
             // Send btc transaction
             if (btcSendAmount.compareTo(BigDecimal.ZERO) >= 0) {
-                String btcTransactionId = bitcoinService.sendTransaction(contractEntity.getRecipientBtcAddress(), btcSendAmount);
+                String btcTransactionId = bitcoinService.sendValue(contractEntity.getRecipientBtcAddress(), btcSendAmount);
                 transferEntity.setBtcTransactionId(btcTransactionId);
 
                 log.info("Sent " + btcSendAmount + " btc to " + contractEntity.getRecipientBtcAddress()
