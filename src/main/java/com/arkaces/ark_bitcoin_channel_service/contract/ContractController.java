@@ -1,5 +1,6 @@
 package com.arkaces.ark_bitcoin_channel_service.contract;
 
+import ark_java_client.ArkClient;
 import com.arkaces.ApiException;
 import com.arkaces.aces_listener_api.AcesListenerApi;
 import com.arkaces.aces_server.aces_service.contract.Contract;
@@ -8,7 +9,6 @@ import com.arkaces.aces_server.aces_service.contract.CreateContractRequest;
 import com.arkaces.aces_server.aces_service.error.ServiceErrorCodes;
 import com.arkaces.aces_server.common.error.NotFoundException;
 import com.arkaces.aces_server.common.identifer.IdentifierGenerator;
-import io.ark.core.Crypto;
 import io.swagger.client.model.Subscription;
 import io.swagger.client.model.SubscriptionRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +30,7 @@ public class ContractController {
     private final ContractMapper contractMapper;
     private final AcesListenerApi arkListener;
     private final String arkEventCallbackUrl;
+    private final ArkClient arkClient;
 
     @PostMapping("/contracts")
     public Contract<Results> postContract(@RequestBody CreateContractRequest<Arguments> createContractRequest) {
@@ -43,7 +44,7 @@ public class ContractController {
         // generate bitcoin wallet for deposits
         String depositArkAddressPassphrase = identifierGenerator.generate();
 
-        String depositArkAddress = Crypto.getAddress(Crypto.getKeys(depositArkAddressPassphrase));
+        String depositArkAddress = arkClient.getAddress(depositArkAddressPassphrase);
         contractEntity.setDepositArkAddress(depositArkAddress);
         contractEntity.setDepositArkAddressPassphrase(depositArkAddressPassphrase);
 
