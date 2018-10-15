@@ -18,7 +18,9 @@ serverInfo:
       "type": "object",
       "properties": {
         "recipientBtcAddress": {
-          "type": "string"
+          "type": "string",
+          "title": "Recipient BTC Address",
+          "description": "Enter recipient BTC address to transfer funds to."
         }
       },
       "required": [
@@ -30,37 +32,72 @@ serverInfo:
       "type": "object",
       "properties": {
         "depositArkAddress": {
-          "type": "string"
+          "type": "string",
+          "title": "Deposit ARK Address",
+          "description": "Send ARK to this address to execute contract."
         },
         "recipientBtcAddress": {
-          "type": "string"
+          "type": "string",
+          "title": "Recipient BTC Address",
+          "description": "BTC will arrive at this address on contract execution."
         },
         "transfers": {
           "type": "array",
           "properties": {
-            "arkAmount": {
-              "type": "string"
+            "id": {
+              "type": "string",
+              "title": "Transfer ID",
+              "description": "Identifier for transfer"
             },
-            "arkToBtcRate": {
-              "type": "string"
-            },
-            "arkFlatFee": {
-              "type": "string"
-            },
-            "arkPercentFee": {
-              "type": "string"
-            },
-            "arkTotalFee": {
-              "type": "string"
-            },
-            "btcSendAmount": {
-              "type": "string"
-            },
-            "btcTransactionId": {
-              "type": "string"
+            "status": {
+              "type": "string",
+              "title": "Status",
+              "description": "The status of the transfer"
             },
             "createdAt": {
-              "type": "string"
+              "type": "string",
+              "title": "Create Date",
+              "description": "The time the contract was created."
+            },
+            "arkTransactionId": {
+              "type": "string",
+              "title": "Transaction ID (ARK)",
+              "description": "The transaction ID for the ARK contract fulfillment"
+            },
+            "arkAmount": {
+              "type": "string",
+              "title": "Transfer Amount (ARK)",
+              "description": "The amount of ARK to transfer"
+            },
+            "arkToBtcRate": {
+              "type": "string",
+              "title": "BTC/ARK Exchange Rate",
+              "description": "Amount of BTC to receive per ARK"
+            },
+            "arkFlatFee": {
+              "type": "string",
+              "title": "Flat Fee (ARK)",
+              "description": "Fixed fee per execution, charged in ARK"
+            },
+            "arkPercentFee": {
+              "type": "string",
+              "title": "Percentage Fee (ARK)",
+              "description": "Percentage fee per execution, charged in ARK"
+            },
+            "arkTotalFee": {
+              "type": "string",
+              "title": "Total Fees (ARK)",
+              "description": "The sum of flat fees and percentage fees, charged in ARK"
+            },
+            "btcSendAmount": {
+              "type": "string",
+              "title": "Receiving Amount (BTC)",
+              "Description": "Total BTC to be received, net of fees"
+            },
+            "btcTransactionId": {
+              "type": "string",
+              "title": "Transaction ID (BTC)",
+              "description": "The transaction ID for the BTC contract fulfillment"
             }
           }
         }
