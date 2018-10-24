@@ -167,5 +167,5 @@ notifications:
   enabled: false
   recipientEmailAddress: "change_me"
   fromEmailAddress: "change_me"
-  # Capacity threshold at which low capacity notifications will be sent
+# Capacity threshold at which low capacity notifications will be sent
 lowCapacityThreshold: "0.01"
