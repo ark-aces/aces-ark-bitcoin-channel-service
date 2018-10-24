@@ -2,6 +2,7 @@ package com.arkaces.ark_bitcoin_channel_service.transfer;
 
 import ark_java_client.ArkClient;
 import com.arkaces.aces_server.common.identifer.IdentifierGenerator;
+import com.arkaces.aces_server.aces_service.notification.NotificationService;
 import com.arkaces.ark_bitcoin_channel_service.FeeSettings;
 import com.arkaces.ark_bitcoin_channel_service.ark.ArkSatoshiService;
 import com.arkaces.ark_bitcoin_channel_service.bitcoin_rpc.BitcoinService;
@@ -33,6 +34,8 @@ public class ArkTransactionEventHandler {
     private final ArkSatoshiService arkSatoshiService;
     private final FeeSettings feeSettings;
     private final BitcoinService bitcoinService;
+    private final BigDecimal lowCapacityThreshold;
+    private final NotificationService notificationService;
 
     @PostMapping("/arkEvents")
     public ResponseEntity<Void> handleBitcoinEvent(@RequestBody ArkTransactionEventPayload eventPayload) {
@@ -101,11 +104,21 @@ public class ArkTransactionEventHandler {
                 log.info("Sent " + btcSendAmount + " btc to " + contractEntity.getRecipientBtcAddress()
                         + ", btc transaction id " + btcTransactionId + ", ark transaction " + arkTransactionId);
 
+                notificationService.notifySuccessfulTransfer(
+                        transferEntity.getContractEntity().getId(),
+                        transferEntity.getId()
+                );
+
                 // todo: asynchronously confirm transaction, if transaction fails to confirm we should return btc amount
                 transferEntity.setNeedsBtcConfirmation(true);
             }
 
             transferEntity.setStatus(TransferStatus.COMPLETE);
+            notificationService.notifySuccessfulTransfer(
+                    transferEntity.getContractEntity().getId(),
+                    transferEntity.getId()
+            );
+
             transferRepository.save(transferEntity);
             
             log.info("Saved transfer id " + transferEntity.getId() + " to contract " + contractEntity.getId());
